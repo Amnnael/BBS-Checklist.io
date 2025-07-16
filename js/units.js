@@ -5421,21 +5421,21 @@ const units = [
   },
   {
     id: 775,
-    name: "Character 773",
+    name: "Character 775",
     attribute: "Force",
     rarity: "6★",
     image: baseImageUrl + "775.png"
   },
    {
     id: 776,
-    name: "Character 773",
+    name: "Character 776",
     attribute: "Force",
     rarity: "6★",
     image: baseImageUrl + "776.png"
   },
    {
     id: 777,
-    name: "Character 773",
+    name: "Character 777",
     attribute: "Force",
     rarity: "6★",
     image: baseImageUrl + "777.png"
