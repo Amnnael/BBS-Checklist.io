@@ -1,4 +1,4 @@
-# **6🌟 Checklist**
+# **6⭐ Checklist**
 
 Assets are taken from the mobile game *Bleach Brave Souls*.
 
