@@ -183,7 +183,7 @@ document.querySelectorAll(".filter-owned-button").forEach((button) => {
     } else if (button.classList.contains("owned")) {
       ownedFilter = "owned";
     } else if (button.classList.contains("not-owned")) {
-      ownedFilter = "notOwned";
+      ownedFilter = "not-owned";
     }
 
     document.querySelectorAll(".filter-owned-button").forEach(btn => {
