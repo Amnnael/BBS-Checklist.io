@@ -1,3 +1,4 @@
+
 h1 {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 3rem;
@@ -9,7 +10,7 @@ h1 {
 body {
   position: relative;
   font-family: 'Segoe UI', sans-serif;
-  background-image: url('https://amnnael.github.io/BBS-Checklist.io/css/bg.jpg');
+  background-image: url('/css/bg.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -68,24 +69,22 @@ body > * {
   background-color: #3b0f53;
 }
 
-.unit-card .spe-badge {
+.spe-badge {
   position: absolute;
-  top: -6px;       /* légèrement plus haut */
-  right: -6px;     /* légèrement plus à gauche */
-  width: 28px;
-  height: 28px;
+  top: 6px;
+  right: 6px;
+  width: 22px;
+  height: 22px;
+  background-color: #000000; /* jaune doux */
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 0.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.85rem;
-  font-weight: bold;
-  color: white;
-  text-shadow: 0 0 3px black;
   border-radius: 50%;
-  background: black;                    /* fond noir élégant */
-  border: 2px solid rgba(255, 255, 255, 0.6); /* contour blanc semi-transparent */
-  box-sizing: border-box;
-  box-shadow: 0 0 6px rgba(0,0,0,0.7);  /* ombre subtile */
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+  border: 2px solid #fff; /* optionnel pour contraste */
 }
 
 .unit-card:hover {
@@ -106,21 +105,19 @@ body > * {
 #dropdownAttributeBtn,
 #dropdownFilterMenu button,
 #dropdownAttributeMenu button {
-  border-radius: 0.5rem; /* même arrondi partout */
+  border-radius: 0.5rem;
+  transition: all 0.2s ease-in-out;
 }
 
 /* ✅ Boutons de mode */
 .mode-button.active {
-  outline: 2px solid white;
-  opacity: 1 !important;
+  box-shadow: 0 0 0 2px white inset;
   transform: scale(1.05);
 }
 
 .mode-button {
   background-color: #4b5563;
   color: white;
-  opacity: 1;
-  transition: transform 0.2s, background-color 0.2s;
 }
 
 .mode-button:hover:nth-of-type(1) { background-color: #2563eb; }
@@ -131,32 +128,72 @@ body > * {
 .mode-button.active:nth-of-type(2) { background-color: #7e22ce; }
 .mode-button.active:nth-of-type(3) { background-color: #facc15; color: black; }
 
-/* ✅ Boutons filtres possédés */
+/* Style par défaut */
 .filter-owned-button {
-  background-color: #4b5563;
+  background-color: #1f2937;
   color: white;
-  opacity: 1;
-  transition: transform 0.2s, background-color 0.2s;
+  transition: background-color 0.2s, transform 0.2s;
 }
 
-.filter-owned-button:nth-of-type(1):hover,
-.filter-owned-button.active:nth-of-type(1) {
+/* Hover pour chaque type */
+.filter-owned-button.all:hover {
   background-color: #2563eb;
 }
-
-.filter-owned-button:nth-of-type(2):hover,
-.filter-owned-button.active:nth-of-type(2) {
+.filter-owned-button.owned:hover {
   background-color: #16a34a;
 }
-
-.filter-owned-button:nth-of-type(3):hover,
-.filter-owned-button.active:nth-of-type(3) {
+.filter-owned-button.not-owned:hover {
   background-color: #dc2626;
 }
 
 .filter-owned-button.active {
-  outline: 2px solid white;
-  transform: scale(1.05);
+  font-weight: bold;
+  transform: scale(1.02);
+}
+
+/* Quand actif (après clic) */
+.filter-owned-button.active.all {
+  background-color: #2563eb;
+  font-weight: bold;
+}
+.filter-owned-button.active.owned {
+  background-color: #16a34a;
+  font-weight: bold;
+}
+.filter-owned-button.active.not-owned {
+  background-color: #dc2626;
+  font-weight: bold;
+}
+
+.filter-owned-button.all.active {
+  background-color: #2563eb;
+}
+
+.filter-owned-button.owned.active {
+  background-color: #16a34a;
+}
+
+.filter-owned-button.not-owned.active {
+  background-color: #dc2626;
+}
+
+/* ✅ Suppression des effets de contour */
+.filter-owned-button:focus,
+.filter-owned-button:focus-visible,
+.filter-owned-button:focus-within {
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-tap-highlight-color: transparent;
+}
+
+
+/* Supprimer les petits points autour des boutons actifs (filtres + affinités) */
+.filter-attribute-button:focus,
+#dropdownAttributeMenu button:focus,
+.filter-attribute-button:focus-visible,
+.filter-attribute-button:focus-within {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 /* ✅ Unit cards : désaturées si non possédées */
@@ -196,7 +233,6 @@ body > * {
   padding: 0.5rem 1rem;
   width: 100%;
   max-width: 400px;
-  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 #searchInput::placeholder {
@@ -209,106 +245,96 @@ body > * {
   box-shadow: 0 0 10px #a855f7;
 }
 
-/* ✅ Dropdown Filter menu */
+/* ✅ Dropdown menus */
 #dropdownFilterBtn,
-#dropdownFilterMenu {
+#dropdownAttributeBtn {
   background-color: #4b5563;
   color: white;
 }
 
-#dropdownFilterMenu {
+#dropdownFilterMenu,
+#dropdownAttributeMenu {
+  background-color: #1f2937;
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
-#dropdownFilterMenu button {
-  text-align: left;
-  width: 100%;
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
-  background-color: #374151;
-  transition: background-color 0.2s, transform 0.2s;
-}
-
-#dropdownFilterMenu button:hover {
-  background-color: #6b7280;
-  transform: scale(1.02);
-}
-
-#dropdownFilterMenu button:active,
-#dropdownFilterMenu button.active {
-  background-color: #7e22ce;
-  outline: 2px solid white;
-  transform: scale(1.05);
-}
-
-/* ✅ Dropdown Attribute menu */
-#dropdownAttributeBtn,
-#dropdownAttributeMenu {
-  background-color: #4b5563;
-  color: white;
-}
-
-#dropdownAttributeMenu {
-  overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-}
-
+#dropdownFilterMenu button,
 #dropdownAttributeMenu button {
+  background-color: #1f2937;
   text-align: left;
   width: 100%;
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
-  background-color: #374151;
-  transition: background-color 0.2s, transform 0.2s;
 }
 
+#dropdownFilterMenu button:hover,
 #dropdownAttributeMenu button:hover {
-  background-color: #6b7280;
+  background-color: rgba(255, 255, 255, 0.05);
   transform: scale(1.02);
 }
 
-#dropdownAttributeMenu button:active,
-#dropdownAttributeMenu button.active {
-  background-color: #7e22ce;
-  outline: 2px solid white;
-  transform: scale(1.05);
+
+/* Supprimer les petits points autour des boutons actifs */
+#dropdownFilterMenu button:focus,
+#dropdownAttributeMenu button:focus {
+  outline: none;
+  box-shadow: none;
 }
 
-/* ✅ Boutons Exporter, Importer, Réinitialiser */
-header button:not(.mode-button):not(.filter-owned-button):not(#dropdownFilterBtn):not(#dropdownAttributeBtn) {
-  border-radius: 0.5rem; /* même arrondi */
-  transition: transform 0.2s, background-color 0.2s;
+/* ✅ Supprime contour blanc (focus ring) sur les boutons d’attributs */
+.filter-attribute-button:focus,
+#dropdownAttributeMenu button:focus {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
-/* Hover plus sombre */
-header button:not(.mode-button):not(.filter-owned-button):not(#dropdownFilterBtn):not(#dropdownAttributeBtn):hover {
-  transform: scale(1.05);
-  background-color: #111827; /* gris très foncé au hover */
+/* ✅ Empêche survol trop visible si actif */
+.filter-attribute-button.active:hover {
+  background-color: #4b5563 !important;
+  transform: none !important;
 }
 
-header button:not(.mode-button):not(.filter-owned-button):not(#dropdownFilterBtn):not(#dropdownAttributeBtn):active {
-  background-color: #a855f7; /* violet au clic */
+/* ✅ Optionnel : si toujours du flash visuel, forcer comportement */
+.filter-attribute-button {
+  -webkit-tap-highlight-color: transparent;
+  -moz-outline-style: none;
 }
 
-/* ✅ Hover des boutons dropdown (Filtres & Affinités) */
-#dropdownFilterBtn:hover,
-#dropdownAttributeBtn:hover {
-  background-color: #111827; /* même gris très foncé que les autres boutons */
-  transform: scale(1.05);
+.filter-owned-button.all.active {
+  background-color: #2563eb !important;
 }
 
-#dropdownFilterBtn:active,
-#dropdownAttributeBtn:active {
-  background-color: #a855f7; /* violet au clic pour la cohérence */
+.filter-owned-button.owned.active {
+  background-color: #16a34a !important;
 }
 
-/* ✅ Animation hover pour boutons de mode */
-.mode-button:hover {
-  transform: scale(1.05); /* même zoom que tes dropdowns */
+.filter-owned-button.not-owned.active {
+  background-color: #dc2626 !important;
 }
 
-/* ✅ Optionnel : clic visuel */
-.mode-button:active {
-  transform: scale(0.95);
+/* ✅ Couleurs actives pour chaque affinité */
+.filter-attribute-button.attr-toutes.active {
+  background-color: #4b5563 !important;
 }
+
+.filter-attribute-button.attr-technique.active {
+  background-color: #16a34a !important;
+}
+
+.filter-attribute-button.attr-instinct.active {
+  background-color: #7e22ce !important;
+}
+
+.filter-attribute-button.attr-force.active {
+  background-color: #dc2626 !important;
+}
+
+.filter-attribute-button.attr-vitesse.active {
+  background-color: #2563eb !important;
+}
+
+.filter-attribute-button.attr-connaissance.active {
+  background-color: #ca8a04 !important;
+}
+
