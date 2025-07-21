@@ -5268,7 +5268,7 @@ const units = [
   {
     id: 753,
     name: "Driscoll",
-    attribute: "Connaissance",
+    attribute: "Technique",
     rarity: "6★",
     image: baseImageUrl + "753.png"
   },
