@@ -60,7 +60,7 @@ function renderUnits() {
   filteredUnits = filteredUnits.filter(unit => {
     const unitState = state[unit.id] || { owned: false, ft: false, spec: 1 };
     if (ownedFilter === "owned") return unitState.owned;
-    if (ownedFilter === "notOwned") return !unitState.owned;
+    if (ownedFilter === "not-owned") return !unitState.owned;
     return true;
   });
 
@@ -71,12 +71,14 @@ function renderUnits() {
     );
   }
 
-  // ➕ Filtre recherche
-  if (searchTerm.trim() !== "") {
-    filteredUnits = filteredUnits.filter(unit =>
-      unit.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  }
+ // ➕ Filtre recherche (plus stricte : mot qui commence par le terme)
+if (searchTerm.trim() !== "") {
+  const term = searchTerm.trim().toLowerCase();
+  filteredUnits = filteredUnits.filter(unit => {
+    const nameWords = unit.name.toLowerCase().split(/[\s\-–_.]+/); // découpe mots
+    return nameWords.some(word => word.startsWith(term));
+  });
+}
 
   filteredUnits.forEach(unit => {
     const unitState = state[unit.id] || { owned: false, ft: false, spec: 1 };
@@ -173,55 +175,71 @@ window.addEventListener("DOMContentLoaded", () => {
   renderUnits();
   updateProgress();
 
-  // Gestion du menu déroulant filtres
-  const dropdownBtn = document.getElementById("dropdownFilterBtn");
-  const dropdownMenu = document.getElementById("dropdownFilterMenu");
+// ✅ Filtres : Tous / Possédés / Non Possédés
+document.querySelectorAll(".filter-owned-button").forEach((button) => {
+  button.addEventListener("click", () => {
+    if (button.classList.contains("all")) {
+      ownedFilter = "all";
+    } else if (button.classList.contains("owned")) {
+      ownedFilter = "owned";
+    } else if (button.classList.contains("not-owned")) {
+      ownedFilter = "notOwned";
+    }
 
-  dropdownBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    dropdownMenu.classList.toggle("hidden");
-  });
-
-  // Fermer le menu si clic en dehors
-  window.addEventListener("click", () => {
-    dropdownMenu.classList.add("hidden");
-  });
-
-  // Prevent closing when clicking inside the menu
-  dropdownMenu.addEventListener("click", (e) => e.stopPropagation());
-
-  // Boutons de filtre possédé dans le menu
-  document.querySelectorAll(".filter-owned-button").forEach((button, index) => {
-    button.addEventListener("click", () => {
-      ownedFilter = index === 0 ? "all" : index === 1 ? "owned" : "notOwned";
-      document.querySelectorAll(".filter-owned-button").forEach(btn => btn.classList.remove("active"));
-      button.classList.add("active");
-      dropdownMenu.classList.add("hidden");
-      renderUnits();
+    document.querySelectorAll(".filter-owned-button").forEach(btn => {
+      btn.classList.remove("active");
     });
-  });
 
-  // Boutons de filtre attribute avec couleur dynamique
+    button.classList.add("active");
+    renderUnits();
+  });
+});
+
+// ✅ Affinités : couleurs dynamiques persistantes
+document.querySelectorAll(".filter-attribute-button").forEach((button) => {
+  button.addEventListener("click", (e) => {
+    e.preventDefault();
+    attributeFilter = button.getAttribute("data-attribute").toLowerCase();
+
+    document.querySelectorAll(".filter-attribute-button").forEach(btn => {
+      btn.classList.remove("active");
+      btn.style.removeProperty("background-color");
+      btn.style.removeProperty("font-weight");
+    });
+
+    button.classList.add("active");
+    button.style.setProperty("font-weight", "bold");
+
+    const attr = button.getAttribute("data-attribute");
+    const colorMap = {
+      technique: "#15803d",
+      instinct: "#6b21a8",
+      force: "#b91c1c",
+      vitesse: "#1e3a8a",
+      connaissance: "#ca8a04",
+      all: "#4b5563"
+    };
+
+    const color = colorMap[attr] || "#4b5563";
+    button.style.setProperty("background-color", color, "important");
+
+    renderUnits();
+  });
+});
+
+  // Boutons de filtre attribute
   document.querySelectorAll(".filter-attribute-button").forEach((button) => {
-    button.addEventListener("click", () => {
+    button.addEventListener("click", (e) => {
+      e.preventDefault();
       attributeFilter = button.getAttribute("data-attribute").toLowerCase();
 
       document.querySelectorAll(".filter-attribute-button").forEach(btn => {
-        btn.classList.remove(
-          "bg-green-600", "bg-purple-900", "bg-red-600", "bg-blue-500", "bg-yellow-800", "bg-gray-500"
-        );
-        btn.classList.add("bg-gray-800");
+        btn.classList.remove("active");
+        btn.style.fontWeight = "normal";
       });
 
-      let activeColor = "bg-gray-500"; // par défaut pour "all"
-      if (attributeFilter === "technique") activeColor = "bg-green-600";
-      else if (attributeFilter === "instinct") activeColor = "bg-purple-900";
-      else if (attributeFilter === "force") activeColor = "bg-red-600";
-      else if (attributeFilter === "vitesse") activeColor = "bg-blue-500";
-      else if (attributeFilter === "connaissance") activeColor = "bg-yellow-800";
-
-      button.classList.remove("bg-gray-800");
-      button.classList.add(activeColor);
+      button.classList.add("active");
+      button.style.fontWeight = "bold";
 
       renderUnits();
     });
