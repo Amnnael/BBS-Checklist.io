@@ -2755,7 +2755,7 @@ const units = [
   {
     id: 394,
     name: "Halibel",
-    attribute: "Connaissance",
+    attribute: "Technique",
     rarity: "6★",
     image: baseImageUrl + "394.png"
   },
